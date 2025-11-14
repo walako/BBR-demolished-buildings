@@ -1,0 +1,323 @@
+<!-- ============================================ -->
+<!-- CSS STYLES FOR MAP CONTROLS                -->
+<!-- ============================================ -->
+<style>
+/* Floor slider control box - positioned in top-right corner */
+.floor-slider-container {
+    position: fixed;           /* Fixed position so it stays visible when scrolling */
+    top: 80px;                 /* Distance from top of screen */
+    right: 10px;               /* Distance from right edge */
+    width: 250px;              /* Width of the control box */
+    background: white;         /* White background */
+    padding: 15px;             /* Space inside the box */
+    border: 2px solid rgba(0,0,0,0.2);  /* Subtle border */
+    border-radius: 4px;        /* Rounded corners */
+    z-index: 1000;             /* Display above map but below legend */
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);  /* Drop shadow for depth */
+}
+
+/* Heading inside slider container */
+.floor-slider-container h4 {
+    margin: 0 0 10px 0;        /* Bottom margin only */
+    font-size: 14px;           /* Font size */
+    font-weight: bold;         /* Bold text */
+}
+
+/* Wrapper for each individual slider */
+.slider-wrapper {
+    margin: 10px 0;            /* Vertical spacing between sliders */
+}
+
+/* Style for the range slider inputs */
+.slider-wrapper input {
+    width: 100%;               /* Full width of container */
+}
+
+/* Container for displaying min/max values */
+.slider-values {
+    display: flex;             /* Flexbox layout */
+    justify-content: space-between;  /* Space items evenly */
+    font-size: 12px;           /* Smaller text */
+    margin-top: 5px;           /* Space above values */
+}
+
+/* Building counter display */
+.building-counter {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.building-counter .count {
+    font-size: 20px;
+    color: #2196F3;
+}
+</style>
+
+<!-- ============================================ -->
+<!-- FLOOR FILTER CONTROL                       -->
+<!-- ============================================ -->
+<!-- Two sliders to filter buildings by number of floors -->
+<!-- {min_floors} and {max_floors} are replaced by Python with actual values -->
+<div class="floor-slider-container">
+    <h4>Filter by Number of Floors</h4>
+    
+    <!-- Minimum floor slider -->
+    <div class="slider-wrapper">
+        <label>Min Floors: <span id="min-floor-value">{min_floors}</span></label>
+        <input type="range" id="min-floor-slider" min="{min_floors}" max="{max_floors}" value="{min_floors}" step="1">
+    </div>
+    
+    <!-- Maximum floor slider -->
+    <div class="slider-wrapper">
+        <label>Max Floors: <span id="max-floor-value">{max_floors}</span></label>
+        <input type="range" id="max-floor-slider" min="{min_floors}" max="{max_floors}" value="{max_floors}" step="1">
+    </div>
+    
+    <hr style="margin: 15px 0; border: 1px solid #ddd;">
+    
+    <!-- ========== AREA FILTER ========== -->
+    <h4>Filter by Area (m²)</h4>
+    
+    <!-- Minimum area slider -->
+    <div class="slider-wrapper">
+        <label>Min Area: <span id="min-area-value">{min_area}</span> m²</label>
+        <input type="range" id="min-area-slider" min="{min_area}" max="{max_area}" value="{min_area}" step="100">
+    </div>
+    
+    <!-- Maximum area slider -->
+    <div class="slider-wrapper">
+        <label>Max Area: <span id="max-area-value">{max_area}</span> m²</label>
+        <input type="range" id="max-area-slider" min="{min_area}" max="{max_area}" value="{max_area}" step="100">
+    </div>
+
+        <!-- ========== AGE AT DEMOLISHION FILTER ========== -->
+    <h4>Filter by Age at Demolition (years)</h4>
+
+    <!-- Minimum age slider -->
+    <div class="slider-wrapper">
+        <label>Min Age: <span id="min-age-value">{min_age}</span> years</label>
+        <input type="range" id="min-age-slider" min="{min_age}" max="{max_age}" value="{min_age}" step="1">
+    </div>
+
+    <!-- Maximum age slider -->
+    <div class="slider-wrapper">
+        <label>Max Age: <span id="max-age-value">{max_age}</span> years</label>
+        <input type="range" id="max-age-slider" min="{min_age}" max="{max_age}" value="{max_age}" step="1">
+    </div>
+
+    <!-- ========== BUILDING COUNTER ========== -->
+    <div class="building-counter">
+        <div>Buildings Displayed:</div>
+        <div class="count" id="building-count">0</div>
+    </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- BUILDING USAGE LEGEND WITH CHECKBOXES       -->
+<!-- ============================================ -->
+<!-- Shows color coding for different building usage types -->
+<!-- Positioned in bottom-right corner -->
+<div style="position: fixed; 
+            bottom: 50px; right: 50px; width: 280px; height: auto;
+            border:2px solid grey; z-index:9999; font-size:14px ;
+            background-color:white; padding: 10px;">
+<b>Building Usage Legend</b><br>
+<div style="margin-top: 8px;">
+    <!-- Each line has a checkbox, colored square, and usage type name -->
+    <!-- data-usage values are normalized: spaces->hyphens, &->and, lowercase -->
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="residential-buildings" checked style="margin-right: 5px;">
+        <i style="background: #e74c3c; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Residential Buildings
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="commercial" checked style="margin-right: 5px;">
+        <i style="background: #3498db; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Commercial
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="industrial-and-production" checked style="margin-right: 5px;">
+        <i style="background: #95a5a6; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Industrial & Production
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="agricultural-and-rural" checked style="margin-right: 5px;">
+        <i style="background: #27ae60; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Agricultural & Rural
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="institutional-and-public" checked style="margin-right: 5px;">
+        <i style="background: #f39c12; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Institutional & Public
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="office" checked style="margin-right: 5px;">
+        <i style="background: #9b59b6; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Office
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="transport-and-parking" checked style="margin-right: 5px;">
+        <i style="background: #0f3885; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Transport & Parking
+    </label>
+    
+    <label style="display: block; margin: 5px 0; cursor: pointer;">
+        <input type="checkbox" class="usage-filter" data-usage="leisure-and-sports" checked style="margin-right: 5px;">
+        <i style="background: #e67e22; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        Leisure & Sports
+    </label>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- JAVASCRIPT FOR INTERACTIVE CONTROLS        -->
+<!-- ============================================ -->
+<script>
+// ========== SLIDER SETUP ==========
+// Get references to HTML elements for floor sliders
+var minSlider = document.getElementById('min-floor-slider');  // Min floor range slider
+var maxSlider = document.getElementById('max-floor-slider');  // Max floor range slider
+var minValue = document.getElementById('min-floor-value');    // Min floor display value
+var maxValue = document.getElementById('max-floor-value');    // Max floor display value
+
+// Get references to HTML elements for area sliders
+var minAreaSlider = document.getElementById('min-area-slider');  // Min area range slider
+var maxAreaSlider = document.getElementById('max-area-slider');  // Max area range slider
+var minAreaValue = document.getElementById('min-area-value');    // Min area display value
+var maxAreaValue = document.getElementById('max-area-value');    // Max area display value
+
+// Get references to HTML elements for age sliders
+var minAgeSlider = document.getElementById('min-age-slider');  // Min age range slider
+var maxAgeSlider = document.getElementById('max-age-slider');  // Max age range slider
+var minAgeValue = document.getElementById('min-age-value');    // Min age display value
+var maxAgeValue = document.getElementById('max-age-value');    // Max age display value
+
+// ========== FILTER MARKERS FUNCTION ==========
+// This function runs every time any slider is moved OR checkbox is toggled
+// It shows/hides building markers based on their floor count, area, age, and building usage
+function filterMarkers() {
+    // Get current slider values for floors
+    var minFloor = parseInt(minSlider.value);
+    var maxFloor = parseInt(maxSlider.value);
+    
+    // Get current slider values for area
+    var minArea = parseInt(minAreaSlider.value);
+    var maxArea = parseInt(maxAreaSlider.value);
+
+    // Get current slider values for age at demolition
+    var minAge = parseInt(minAgeSlider.value);
+    var maxAge = parseInt(maxAgeSlider.value);
+    
+    // Update the displayed numbers next to sliders
+    minValue.textContent = minFloor;
+    maxValue.textContent = maxFloor;
+    minAreaValue.textContent = minArea;
+    maxAreaValue.textContent = maxArea;
+    minAgeValue.textContent = minAge;
+    maxAgeValue.textContent = maxAge;
+
+    // Prevent min slider from going above max slider (floors)
+    if (minFloor > maxFloor) {
+        minSlider.value = maxFloor;
+        minFloor = maxFloor;
+        minValue.textContent = minFloor;
+    }
+    
+    // Prevent min slider from going above max slider (area)
+    if (minArea > maxArea) {
+        minAreaSlider.value = maxArea;
+        minArea = maxArea;
+        minAreaValue.textContent = minArea;
+    }
+
+    // Prevent min slider from going above max slider (age)
+    if (minAge > maxAge) {
+        minAgeSlider.value = maxAge;
+        minAge = maxAge;
+        minAgeValue.textContent = minAge;
+    }
+    
+    // Get enabled building usage types from checkboxes
+    var enabledUsages = new Set();
+    document.querySelectorAll('.usage-filter:checked').forEach(function(checkbox) {
+        enabledUsages.add(checkbox.getAttribute('data-usage'));
+    });
+    
+    // Find all building markers on the map
+    var markers = document.querySelectorAll('.building-marker');
+    
+    // Counter for visible buildings
+    var visibleCount = 0;
+    
+    // Loop through each marker and show/hide based on all filters
+    markers.forEach(function(marker) {
+        // Get the marker's CSS classes (contains floor number, area, age, and usage)
+        var classes = marker.className.baseVal || marker.className;
+        
+        // Extract the floor number from class name (e.g., "floor-5" → 5)
+        var floorMatch = classes.match(/floor-(\d+)/);
+        var floor = floorMatch ? parseInt(floorMatch[1]) : 0;
+        
+        // Extract the area from class name (e.g., "area-1500" → 1500)
+        var areaMatch = classes.match(/area-(\d+)/);
+        var area = areaMatch ? parseInt(areaMatch[1]) : 0;
+
+        // Extract the age at demolition from class name (e.g., "age-50" → 50)
+        var ageMatch = classes.match(/age-(\d+)/);
+        var age = ageMatch ? parseInt(ageMatch[1]) : 0;
+        
+        // Extract the building usage from class name (e.g., "usage-residential-buildings")
+        // Usage names are normalized: lowercase, spaces->hyphens, &->and
+        var usageMatch = classes.match(/usage-([\w-]+)/);
+        var usage = usageMatch ? usageMatch[1] : '';
+        
+        // Show marker ONLY if floor, area, age are within ranges AND usage is enabled
+        if (floor >= minFloor && floor <= maxFloor && 
+            area >= minArea && area <= maxArea && 
+            age >= minAge && age <= maxAge &&
+            enabledUsages.has(usage)) {
+            marker.style.display = '';      // Show (empty string = default display)
+            visibleCount++;                 // Increment counter
+        } else {
+            marker.style.display = 'none';  // Hide
+        }
+    });
+    
+    // Update the building counter display
+    document.getElementById('building-count').textContent = visibleCount;
+}
+
+// ========== ATTACH EVENT LISTENERS ==========
+// Run filterMarkers() whenever any slider is moved
+minSlider.addEventListener('input', filterMarkers);
+maxSlider.addEventListener('input', filterMarkers);
+minAreaSlider.addEventListener('input', filterMarkers);
+maxAreaSlider.addEventListener('input', filterMarkers);
+minAgeSlider.addEventListener('input', filterMarkers);
+maxAgeSlider.addEventListener('input', filterMarkers);
+
+// Run filterMarkers() whenever any building usage checkbox is toggled
+document.querySelectorAll('.usage-filter').forEach(function(checkbox) {
+    checkbox.addEventListener('change', filterMarkers);
+});
+
+// ========== INITIALIZE COUNTER ON PAGE LOAD ==========
+// Wait for the map to load, then run filterMarkers() to set initial count
+setTimeout(function() {
+    filterMarkers();
+}, 1000);
+
+</script>

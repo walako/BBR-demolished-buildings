@@ -1,0 +1,80 @@
+Original Field,Translated Field
+datafordelerOpdateringstid,Update Time
+byg007Bygningsnummer,Building Number
+byg021BygningensAnvendelse,Building Usage
+byg026Opførelsesår,Year of Construction
+byg032YdervæggensMateriale,Outer Wall Material
+byg033Tagdækningsmateriale,Roof Covering Material
+byg037KildeTilBygningensMaterialer,Source of Building Materials
+byg038SamletBygningsareal,Total Building Area
+byg039BygningensSamledeBoligAreal,Total Residential Area
+byg041BebyggetAreal,Built-up Area
+byg053BygningsarealerKilde,Source of Building Area
+byg054AntalEtager,Number of Floors
+byg056Varmeinstallation,Heating Installation
+byg057Opvarmningsmiddel,Heating Medium
+byg058SupplerendeVarme,Supplementary Heating
+byg094Revisionsdato,Revision Date
+byg133KildeTilKoordinatsæt,Source of Coordinate Set
+byg134KvalitetAfKoordinatsæt,Quality of Coordinate Set
+byg136PlaceringPåSøterritorie,Location on Territorial Waters
+byg404Koordinat,Coordinate
+byg406Koordinatsystem,Coordinate System
+forretningshændelse,Business Event
+forretningsområde,Business Area
+forretningsproces,Business Process
+grund,Plot
+husnummer,House Number
+id_lokalId,Local ID
+id_namespace,Namespace
+jordstykke,Parcel
+kommunekode,Municipality Code
+registreringFra,Registration From
+registreringsaktør,Registration Actor
+status,Status
+virkningFra,Effect From
+virkningsaktør,Effect Actor
+etageList,Floor List
+opgangList,Entrance List
+byg027OmTilbygningsår,Year of Extension
+byg040BygningensSamledeErhvervsAreal,Total Commercial Area
+byg135SupplerendeOplysningOmKoordinatsæt,Supplementary Information on Coordinate Set
+byg122Gyldighedsdato,Validity Date
+byg030Vandforsyning,Water Supply
+byg031Afløbsforhold,Drainage Conditions
+byg111StormrådetsOversvømmelsesSelvrisiko,Flood Risk Self-Insurance (Storm Council)
+byg112DatoForRegistreringFraStormrådet,Date of Registration from Storm Council
+byg045ArealIndbyggetUdestueEllerLign,Area of Built-in Conservatory or Similar
+byg044ArealIndbyggetUdhus,Area of Built-in Shed
+bygningPåFremmedGrundList,Building on Foreign Land List
+byg049ArealAfOverdækketAreal,Area of Covered Area
+byg047ArealAfAffaldsrumITerrænniveau,Area of Waste Room at Ground Level
+byg043ArealIndbyggetCarport,Area of Built-in Carport
+byg042ArealIndbyggetGarage,Area of Built-in Garage
+byg048AndetAreal,Other Area
+byg119Udledningstilladelse,Discharge Permit
+byg034SupplerendeYdervæggensMateriale,Supplementary Outer Wall Material
+byg035SupplerendeTagdækningsMateriale,Supplementary Roof Covering Material
+byg069Sikringsrumpladser,Shelter Room Spaces
+byg051Adgangsareal,Access Area
+byg055AfvigendeEtager,Deviating Floors
+byg113Byggeskadeforsikringsselskab,Building Damage Insurance Company
+byg029DatoForMidlertidigOpførtBygning,Date for Temporary Building
+byg036AsbestholdigtMateriale,Asbestos-containing Material
+byg070Fredning,Preservation
+byg121OmfattetAfByggeskadeforsikring,Covered by Building Damage Insurance
+byg114DatoForByggeskadeforsikring,Date for Building Damage Insurance
+byg124PåbudVedrSpildevandsafledning,Order Regarding Wastewater Disposal
+byg125FristVedrSpildevandsafledning,Deadline Regarding Wastewater Disposal
+byg403ØvrigeBemærkningerFraStormrådet,Other Remarks from Storm Council
+byg123MedlemskabAfSpildevandsforsyning,Membership of Wastewater Utility
+byg046SamletArealAfLukkedeOverdækningerPåBygningen,Total Area of Closed Covers on Building
+ejerlejlighed,Condominium
+byg131DispensationFritagelseIftKollektivVarmeforsyning,Dispensation/Exemption from Collective Heating Supply
+byg132DatoForDispensationFritagelseIftKollektivVarmeforsyning,Date for Dispensation/Exemption from Collective Heating Supply
+byg130ArealAfUdvendigEfterisolering,Area of External Insulation
+byg128TilladelseTilAlternativBortskaffelseEllerAfledning,Permit for Alternative Disposal or Discharge
+byg129DatoForTilladelseTilAlternativBortskaffelseEllerAfledning,Date for Permit for Alternative Disposal or Discharge
+byg140ServitutForUdlejningsEjendomDato,Servitude for Rental Property Date
+byg126TilladelseTilUdtræden,Permit for Withdrawal
+byg127DatoForTilladelseTilUdtræden,Date for Permit for Withdrawal
