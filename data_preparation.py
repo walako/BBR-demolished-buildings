@@ -7,7 +7,7 @@ from pyproj import Transformer
 def convert_raw_data(filepath, area_filter=500, demolished=False):
 
 
-    df = pd.read_csv("data/bbr_nedrivning_raw.csv", low_memory=False)
+    df = pd.read_csv(filepath, low_memory=False)
     print('Loaded raw data with records: ', len(df))
     # fix the kode list file
     kode = pd.read_excel("mappings/BBRKodelister.xlsx")
@@ -153,5 +153,5 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
     return df_mapped
 
 
-df_nedrivning_bygning_all = convert_raw_data("data/bbr_nedrivning_bygning_all.csv", area_filter=0, demolished=False)
-df_nedrivning_bygning_all.to_csv("data/bbr_nedrivning_bygning_all_mapped.csv", index=False)
+df_nedrivning_bygning_all = convert_raw_data("data/bbr_historisk_raw.csv", area_filter=500, demolished=True)
+df_nedrivning_bygning_all.to_csv("data/bbr_historisk_all_mapped.csv", index=False)
