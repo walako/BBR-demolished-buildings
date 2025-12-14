@@ -30,7 +30,7 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
     ]
     
     for col in columns_to_convert:
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+        df[col] = pd.to_numeric(df[col], errors='coerce') if col in df.columns else next
 
     # for each column in df, replace the values with the corresponding title from kode where dataset and attribute match by the key, save the result to a new df
 
@@ -115,7 +115,7 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
             return None
 
     print('Converted coordinates from UTM to WGS84.')
-    df_mapped['Coordinate Converted'] = df_mapped['Coordinate'].apply(convert_coordinate)
+    df_mapped['Coordinate Converted'] = df_mapped['Coordinate'].apply(convert_coordinate) if 'Coordinate' in df_mapped.columns else None
     df_mapped['lat'] = df_mapped['Coordinate Converted'].apply(lambda x: x.split()[0] if x else None)
     df_mapped['lon'] = df_mapped['Coordinate Converted'].apply(lambda x: x.split()[1] if x else None)
 
@@ -134,10 +134,10 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
         print('Calculated building age at demolition.')
 
     # Areas should be positive values
-    df_mapped['Built-up Area'] = pd.to_numeric(df_mapped['Built-up Area'], errors='coerce').abs()
-    df_mapped['Total Building Area'] = pd.to_numeric(df_mapped['Total Building Area'], errors='coerce').abs()
-    df_mapped['Total Commercial Area'] = pd.to_numeric(df_mapped['Total Commercial Area'], errors='coerce').abs()
-    df_mapped['Total Residential Area'] = pd.to_numeric(df_mapped['Total Residential Area'], errors='coerce').abs()
+    df_mapped['Built-up Area'] = pd.to_numeric(df_mapped['Built-up Area'], errors='coerce').abs() if 'Built-up Area' in df_mapped.columns else None
+    df_mapped['Total Building Area'] = pd.to_numeric(df_mapped['Total Building Area'], errors='coerce').abs() if 'Total Building Area' in df_mapped.columns else None
+    df_mapped['Total Commercial Area'] = pd.to_numeric(df_mapped['Total Commercial Area'], errors='coerce').abs() if 'Total Commercial Area' in df_mapped.columns else None
+    df_mapped['Total Residential Area'] = pd.to_numeric(df_mapped['Total Residential Area'], errors='coerce').abs() if 'Total Residential Area' in df_mapped.columns else None
     print('Converted area columns to positive numeric values.')
     # new column Area that takes whatever value is bigger between 'Built-up Area' and 'Total Building Area'
     df_mapped['Area'] = df_mapped[['Built-up Area', 'Total Building Area', 'Total Commercial Area', 'Total Residential Area']].max(axis=1)
@@ -153,5 +153,5 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
     return df_mapped
 
 
-df_nedrivning_bygning_all = convert_raw_data("data/bbr_historisk_raw.csv", area_filter=500, demolished=True)
-df_nedrivning_bygning_all.to_csv("data/bbr_historisk_all_mapped.csv", index=False)
+df_nedrivning_bygning_all = convert_raw_data("data/bbr_historisk_sager_all.csv", area_filter=0, demolished=False)
+df_nedrivning_bygning_all.to_csv("data/bbr_historisk_sager_mapped.csv", index=False)
