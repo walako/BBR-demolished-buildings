@@ -89,3 +89,5 @@ data/
 *.xlsx
 !mappings/*.xlsx
 dar.py
+
+output/
