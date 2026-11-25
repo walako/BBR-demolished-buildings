@@ -145,13 +145,22 @@ def convert_raw_data(filepath, area_filter=500, demolished=False):
     if area_filter > 0:
         df_mapped = df_mapped[df_mapped['Area']>=area_filter].copy()
         print(f'Filtered records with Area >= {area_filter} sqm.')
-
-    df_mapped = df_mapped[df_mapped['Status']!='Fejlregistreret']
     
+    print(f'# of records after filtering by area: \t{len(df_mapped)}')
+
+    # remove rows where Status is 'Fejlregistreret'
+    print(df_mapped['Status'].value_counts())
+    df_mapped = df_mapped[df_mapped['Status']!='Fejlregistreret']
     print(f'# of records after filtering by status: \t{len(df_mapped)}')
+    
+    # remove rows where Building Age at Demolition is smaller than 2 yers
+    if demolished:
+        df_mapped = df_mapped[(df_mapped['Building Age at Demolition'].isna()) | (df_mapped['Building Age at Demolition'] > 2)]
+
+    print(f'# of records after filtering by building age: \t{len(df_mapped)}')
 
     return df_mapped
 
 
-df_nedrivning_bygning_all = convert_raw_data("data/bbr_historisk_sager_all.csv", area_filter=0, demolished=False)
-df_nedrivning_bygning_all.to_csv("data/bbr_historisk_sager_mapped.csv", index=False)
+df_nedrivning_bygning_all = convert_raw_data("data/bbr_historisk_raw.csv", area_filter=500, demolished=True)
+df_nedrivning_bygning_all.to_csv("data/bbr_historisk_filtered.csv", index=False)

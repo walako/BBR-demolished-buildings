@@ -2,18 +2,64 @@
 <!-- CSS STYLES FOR MAP CONTROLS                -->
 <!-- ============================================ -->
 <style>
-/* Floor slider control box - positioned in top-right corner */
+/* Keep filters and legend together in one scrollable panel. */
+.map-sidebar {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    width: 310px;
+    max-height: calc(100vh - 60px);
+    box-sizing: border-box;
+    padding: 12px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+}
+
+.map-sidebar-content {
+    max-height: calc(100vh - 88px);
+    overflow-y: auto;
+}
+
+.map-sidebar.is-collapsed {
+    transform: translateX(100%);
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 0;
+    left: -42px;
+    width: 36px;
+    height: 42px;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
+    background: white;
+    box-shadow: -2px 1px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    font-size: 20px;
+}
+
 .floor-slider-container {
-    position: fixed;           /* Fixed position so it stays visible when scrolling */
-    top: 80px;                 /* Distance from top of screen */
-    right: 10px;               /* Distance from right edge */
-    width: 250px;              /* Width of the control box */
-    background: white;         /* White background */
-    padding: 15px;             /* Space inside the box */
-    border: 2px solid rgba(0,0,0,0.2);  /* Subtle border */
-    border-radius: 4px;        /* Rounded corners */
-    z-index: 1000;             /* Display above map but below legend */
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);  /* Drop shadow for depth */
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.usage-legend {
+    padding-top: 12px;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .map-sidebar {
+        top: 50px;
+        right: 10px;
+        width: min(310px, calc(100vw - 20px));
+        max-height: calc(100vh - 60px);
+    }
 }
 
 /* Heading inside slider container */
@@ -64,6 +110,9 @@
 <!-- ============================================ -->
 <!-- Two sliders to filter buildings by number of floors -->
 <!-- {min_floors} and {max_floors} are replaced by Python with actual values -->
+<div class="map-sidebar">
+<button type="button" class="sidebar-toggle" aria-label="Collapse filters and legend" aria-expanded="true">›</button>
+<div class="map-sidebar-content">
 <div class="floor-slider-container">
     <h4>Filter by Number of Floors</h4>
     
@@ -123,62 +172,61 @@
 <!-- BUILDING USAGE LEGEND WITH CHECKBOXES       -->
 <!-- ============================================ -->
 <!-- Shows color coding for different building usage types -->
-<!-- Positioned in bottom-right corner -->
-<div style="position: fixed; 
-            bottom: 50px; right: 50px; width: 280px; height: auto;
-            border:2px solid grey; z-index:9999; font-size:14px ;
-            background-color:white; padding: 10px;">
+<!-- Placed below the filters in the shared sidebar -->
+<div class="usage-legend">
 <b>Building Usage Legend</b><br>
 <div style="margin-top: 8px;">
     <!-- Each line has a checkbox, colored square, and usage type name -->
     <!-- data-usage values are normalized: spaces->hyphens, &->and, lowercase -->
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="residential-buildings" checked style="margin-right: 5px;">
-        <i style="background: #e74c3c; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-residential-buildings}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Residential Buildings
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="commercial" checked style="margin-right: 5px;">
-        <i style="background: #3498db; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-commercial}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Commercial
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="industrial-and-production" checked style="margin-right: 5px;">
-        <i style="background: #95a5a6; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-industrial-and-production}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Industrial & Production
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="agricultural-and-rural" checked style="margin-right: 5px;">
-        <i style="background: #27ae60; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-agricultural-and-rural}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Agricultural & Rural
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="institutional-and-public" checked style="margin-right: 5px;">
-        <i style="background: #f39c12; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-institutional-and-public}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Institutional & Public
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="office" checked style="margin-right: 5px;">
-        <i style="background: #9b59b6; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-office}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Office
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="transport-and-parking" checked style="margin-right: 5px;">
-        <i style="background: #0f3885; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-transport-and-parking}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Transport & Parking
     </label>
     
     <label style="display: block; margin: 5px 0; cursor: pointer;">
         <input type="checkbox" class="usage-filter" data-usage="leisure-and-sports" checked style="margin-right: 5px;">
-        <i style="background: #e67e22; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
+        <i style="background: {color-leisure-and-sports}; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></i>
         Leisure & Sports
     </label>
+</div>
+</div>
 </div>
 </div>
 
@@ -186,6 +234,27 @@
 <!-- JAVASCRIPT FOR INTERACTIVE CONTROLS        -->
 <!-- ============================================ -->
 <script>
+var mapSidebar = document.querySelector('.map-sidebar');
+var sidebarToggle = document.querySelector('.sidebar-toggle');
+
+function setSidebarCollapsed(collapsed) {
+    mapSidebar.classList.toggle('is-collapsed', collapsed);
+    sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+    sidebarToggle.setAttribute(
+        'aria-label',
+        collapsed ? 'Expand filters and legend' : 'Collapse filters and legend'
+    );
+    sidebarToggle.textContent = collapsed ? '☰' : '›';
+}
+
+if (window.matchMedia('(max-width: 600px)').matches) {
+    setSidebarCollapsed(true);
+}
+
+sidebarToggle.addEventListener('click', function() {
+    setSidebarCollapsed(!mapSidebar.classList.contains('is-collapsed'));
+});
+
 // ========== SLIDER SETUP ==========
 // Get references to HTML elements for floor sliders
 var minSlider = document.getElementById('min-floor-slider');  // Min floor range slider
